@@ -22,6 +22,7 @@ import (
 	"github.com/spf13/cobra"
 
 	homedir "github.com/mitchellh/go-homedir"
+	"github.com/neghoda/task/taskstore"
 	"github.com/spf13/viper"
 )
 
@@ -39,7 +40,23 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	db, err := taskstore.OpenTasksDB("taskDB")
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if err := taskstore.RegisterTaskDB(db); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	if err := taskstore.CloseTasksDB(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

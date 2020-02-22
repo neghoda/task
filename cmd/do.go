@@ -17,7 +17,9 @@ package cmd
 
 import (
 	"fmt"
+	"strconv"
 
+	"github.com/neghoda/task/taskstore"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +28,20 @@ var doCmd = &cobra.Command{
 	Use:   "do",
 	Short: "do marks existed task as completed",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("do called")
+		if len(args) == 0 {
+			fmt.Println("Please specify task number to process")
+			return
+		}
+		key, err := strconv.Atoi(args[0])
+		if err != nil {
+			fmt.Println("Argument isn't a number")
+			return
+		}
+		if task, ok := taskstore.RemoveTask(key); ok {
+			fmt.Printf("\"%v\" marked as done\n", task)
+			return
+		}
+		fmt.Println("Task with provided number doesn't exist")
 	},
 }
 

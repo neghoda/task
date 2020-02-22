@@ -18,6 +18,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/neghoda/task/taskstore"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +27,7 @@ var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "list shows all available tasks",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+		fmt.Println(taskstore.ListTask())
 	},
 }
 

@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"fmt"
+	"strings"
+
+	"github.com/neghoda/task/taskstore"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +28,7 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "add will save TODO for futer use",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("add called")
+		taskstore.AddTask(strings.Join(args, " "))
 	},
 }
 
